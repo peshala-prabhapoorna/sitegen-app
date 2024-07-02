@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -57,6 +57,33 @@ class TestHTMLNode(unittest.TestCase):
                 "children: None\n"
                 "props   : {'id': 'bold_id', 'class': 'bold_class'}]\n"
                 "props   : {'id': 'para_id', 'class': 'para_class'}"
+            ),
+        )
+
+
+class TestLeafNode(unittest.TestCase):
+    def test_to_html(self):
+        leaf = LeafNode(
+            "p",
+            "this is a leaf node",
+            {"id": "para_id", "class": "para_class"},
+        )
+        self.assertEqual(
+            leaf.to_html(),
+            '<p id="para_id" class="para_class">this is a leaf node</p>',
+        )
+
+    def test_repr(self):
+        leaf = LeafNode(
+            "p",
+            "this is a leaf node",
+            {"id": "para_id", "class": "para_class"},
+        )
+        self.assertEqual(
+            repr(leaf),
+            (
+                "LeafNode(p, this is a leaf node, "
+                "{'id': 'para_id', 'class': 'para_class'})"
             ),
         )
 
