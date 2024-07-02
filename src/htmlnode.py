@@ -18,11 +18,8 @@ class HTMLNode:
 
     def __repr__(self):
         return (
-            f"HTMLNode:\n"
-            f"tag     : {self.tag}\n"
-            f"value   : {self.value}\n"
-            f"children: {self.children}\n"
-            f"props   : {self.props}"
+            f"HTMLNode({self.tag}, {self.value}, {self.children}, "
+            f"{self.props})"
         )
 
 

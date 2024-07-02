@@ -24,12 +24,8 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(
             repr(node),
             (
-                "HTMLNode:\n"
-                "tag     : a\n"
-                "value   : link here\n"
-                "children: None\n"
-                "props   : {'href': 'https://lavenderleit.dev', 'rel': "
-                "'external'}"
+                "HTMLNode(a, link here, None, "
+                "{'href': 'https://lavenderleit.dev', 'rel': 'external'})"
             ),
         )
 
@@ -48,15 +44,10 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(
             repr(node),
             (
-                "HTMLNode:\n"
-                "tag     : p\n"
-                "value   : this is a paragraph with <b>bold</b> text.\n"
-                "children: [HTMLNode:\n"
-                "tag     : b\n"
-                "value   : bold\n"
-                "children: None\n"
-                "props   : {'id': 'bold_id', 'class': 'bold_class'}]\n"
-                "props   : {'id': 'para_id', 'class': 'para_class'}"
+                "HTMLNode(p, this is a paragraph with <b>bold</b> text., "
+                "[HTMLNode(b, bold, None, "
+                "{'id': 'bold_id', 'class': 'bold_class'})], "
+                "{'id': 'para_id', 'class': 'para_class'})"
             ),
         )
 
