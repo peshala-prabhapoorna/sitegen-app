@@ -17,8 +17,7 @@ class TestTextNode(unittest.TestCase):
     def test_repr(self):
         node = TextNode("This has a url", "link", "https://url.xyz")
         self.assertEqual(
-            repr(node), 
-            "TextNode(This has a url, link, https://url.xyz)"
+            repr(node), "TextNode(This has a url, link, https://url.xyz)"
         )
 
 
