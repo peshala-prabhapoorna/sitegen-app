@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -75,6 +75,50 @@ class TestLeafNode(unittest.TestCase):
             (
                 "LeafNode(p, this is a leaf node, "
                 "{'id': 'para_id', 'class': 'para_class'})"
+            ),
+        )
+
+
+class TestParentNode(unittest.TestCase):
+    def test_to_html(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                LeafNode("i", "italic text"),
+                LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(
+            node.to_html(),
+            "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>",
+        )
+
+    def test_to_html_with_nested(self):
+        node = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text", {"id": "bold_id"}),
+                LeafNode(None, "Normal text"),
+                ParentNode(
+                    "a",
+                    [
+                        LeafNode("i", "italic text", {"color": "red"}),
+                        LeafNode(None, "Normal text"),
+                    ],
+                    {"href": "https://lavenderleit.dev"},
+                ),
+                LeafNode(None, "Normal text"),
+            ],
+            {"id": "p_out_id", "class": "p_out_class"},
+        )
+        self.assertEqual(
+            node.to_html(),
+            (
+                '<p id="p_out_id" class="p_out_class"><b id="bold_id">'
+                'Bold text</b>Normal text<a href="https://lavenderleit.dev">'
+                '<i color="red">italic text</i>Normal text</a>Normal text</p>'
             ),
         )
 
