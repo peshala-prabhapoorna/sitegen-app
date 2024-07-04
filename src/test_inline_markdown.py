@@ -1,7 +1,11 @@
 import unittest
 
 from textnode import TextNode, TextType
-from inline_markdown import split_nodes_delimiter
+from inline_markdown import (
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links,
+)
 
 
 class TestSplitNodeFn(unittest.TestCase):
@@ -87,5 +91,33 @@ class TestSplitNodeFn(unittest.TestCase):
                 TextNode("This is another text with a ", TextType.TEXT),
                 TextNode("another bolded", TextType.BOLD),
                 TextNode(" word", TextType.TEXT),
+            ],
+        )
+
+
+class TestExtractUrl(unittest.TestCase):
+    def test_extract_markdown_image(self):
+        text = (
+            "This is text with an ![image](https://picsum.photos/200/300)"
+            " and ![another](https://picsum.photos/200)"
+        )
+        self.assertEqual(
+            extract_markdown_images(text),
+            [
+                ("image", "https://picsum.photos/200/300"),
+                ("another", "https://picsum.photos/200"),
+            ],
+        )
+
+    def test_extract_markdown_links(self):
+        text = (
+            "This is text with a [link](https://www.example.com) and "
+            "[another](https://www.example.com/another)"
+        )
+        self.assertEqual(
+            extract_markdown_links(text),
+            [
+                ("link", "https://www.example.com"),
+                ("another", "https://www.example.com/another"),
             ],
         )
