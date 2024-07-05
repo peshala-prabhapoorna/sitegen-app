@@ -28,6 +28,42 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != TextType.TEXT:
+            new_nodes.append(old_node)
+            continue
+
+        # extract the image links from text, split text and images and add
+        # them as separate nodes
+        text = old_node.text
+        image_links = extract_markdown_images(text)
+        if len(image_links) == 0:
+            new_nodes.append(old_node)
+            continue
+        for image_link in image_links:
+            # add text preceding a image link to new_nodes
+            sections = text.split(f"![{image_link[0]}]({image_link[1]})", 1)
+            if len(sections) != 2:
+                raise ValueError("Invalid markdown: image section not closed")
+            if sections[0] != "":
+                new_nodes.append(TextNode(sections[0], TextType.TEXT))
+
+            # add the image node to new_nodes
+            new_nodes.append(
+                TextNode(image_link[0], TextType.IMAGE, image_link[1])
+            )
+
+            text = sections[1]
+
+        # add the trailing text part after the last image link to new_nodes
+        if text != "":
+            new_nodes.append(TextNode(text, TextType.TEXT))
+
+    return new_nodes
+
+
 def extract_markdown_images(text):
     image_links = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
 

@@ -5,6 +5,7 @@ from inline_markdown import (
     split_nodes_delimiter,
     extract_markdown_images,
     extract_markdown_links,
+    split_nodes_image,
 )
 
 
@@ -119,5 +120,86 @@ class TestExtractUrl(unittest.TestCase):
             [
                 ("link", "https://www.example.com"),
                 ("another", "https://www.example.com/another"),
+            ],
+        )
+
+
+class TestSplitImagesLinks(unittest.TestCase):
+    def test_split_nodes_just_image(self):
+        node = TextNode(
+            "![image](https://picsum.photos/200/300)", TextType.TEXT
+        )
+        self.assertEqual(
+            split_nodes_image([node]),
+            [
+                TextNode(
+                    "image", TextType.IMAGE, "https://picsum.photos/200/300"
+                )
+            ],
+        )
+
+    def test_split_nodes_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://picsum.photos/200/300) and"
+            " another ![second image](https://picsum.photos/200) last words.",
+            TextType.TEXT,
+        )
+        self.assertEqual(
+            split_nodes_image([node]),
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode(
+                    "image", TextType.IMAGE, "https://picsum.photos/200/300"
+                ),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode(
+                    "second image", TextType.IMAGE, "https://picsum.photos/200"
+                ),
+                TextNode(" last words.", TextType.TEXT),
+            ],
+        )
+
+    def test_split_nodes_image_no_link(self):
+        node1 = TextNode("This text has no image link in it.", TextType.TEXT)
+        node2 = TextNode(
+            "Text with [link](https://example.com/) here.", TextType.LINK
+        )
+        self.assertEqual(
+            split_nodes_image([node1, node2]),
+            [
+                TextNode("This text has no image link in it.", TextType.TEXT),
+                TextNode(
+                    "Text with [link](https://example.com/) here.",
+                    TextType.LINK,
+                ),
+            ],
+        )
+
+    def test_split_nodes_image_multi_nodes(self):
+        node1 = TextNode(
+            "![image](https://picsum.photos/200/300)", TextType.TEXT
+        )
+        node2 = TextNode("This text has no image link in it.", TextType.TEXT)
+        node3 = TextNode(
+            "This is text with an ![image](https://picsum.photos/200/300) and"
+            " another ![second image](https://picsum.photos/200) last words.",
+            TextType.TEXT,
+        )
+        self.assertEqual(
+            split_nodes_image([node1, node2, node3]),
+            [
+                TextNode(
+                    "image", TextType.IMAGE, "https://picsum.photos/200/300"
+                ),
+                TextNode("This text has no image link in it.", TextType.TEXT),
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode(
+                    "image", TextType.IMAGE, "https://picsum.photos/200/300"
+                ),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode(
+                    "second image", TextType.IMAGE, "https://picsum.photos/200"
+                ),
+                TextNode(" last words.", TextType.TEXT),
             ],
         )
