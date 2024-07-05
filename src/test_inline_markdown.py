@@ -7,6 +7,7 @@ from inline_markdown import (
     extract_markdown_links,
     split_nodes_image,
     split_nodes_link,
+    text_to_textnodes,
 )
 
 
@@ -265,5 +266,36 @@ class TestSplitLinks(unittest.TestCase):
                 TextNode(" and another ", TextType.TEXT),
                 TextNode("link", TextType.LINK, "https://example.com/"),
                 TextNode(" last words.", TextType.TEXT),
+            ],
+        )
+
+
+class TestTextToTextNodes(unittest.TestCase):
+    def test_text_to_textnodes(self):
+        text = (
+            "This is **text** with an *italic* word and a `code block` and an"
+            " ![image](https://storage.googleapis.com/qvault-webapp-dynamic-"
+            "assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
+        )
+        self.assertEqual(
+            text_to_textnodes(text),
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode(
+                    "image",
+                    TextType.IMAGE,
+                    (
+                        "https://storage.googleapis.com/qvault-webapp-dynamic"
+                        "-assets/course_assets/zjjcJKZ.png"
+                    ),
+                ),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
             ],
         )
