@@ -6,6 +6,7 @@ from inline_markdown import (
     extract_markdown_images,
     extract_markdown_links,
     split_nodes_image,
+    split_nodes_link,
 )
 
 
@@ -200,6 +201,69 @@ class TestSplitImagesLinks(unittest.TestCase):
                 TextNode(
                     "second image", TextType.IMAGE, "https://picsum.photos/200"
                 ),
+                TextNode(" last words.", TextType.TEXT),
+            ],
+        )
+
+
+class TestSplitLinks(unittest.TestCase):
+    def test_split_nodes_just_link(self):
+        node = TextNode("[link](https://example.com/)", TextType.TEXT)
+        self.assertEqual(
+            split_nodes_link([node]),
+            [TextNode("link", TextType.LINK, "https://example.com/")],
+        )
+
+    def test_split_nodes_links(self):
+        node = TextNode(
+            "This is text with an [link](https://example.com/) and"
+            " another [link](https://example.com/) last words.",
+            TextType.TEXT,
+        )
+        self.assertEqual(
+            split_nodes_link([node]),
+            [
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://example.com/"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://example.com/"),
+                TextNode(" last words.", TextType.TEXT),
+            ],
+        )
+
+    def test_split_nodes_link_no_link(self):
+        node1 = TextNode("This text has no link link in it.", TextType.TEXT)
+        node2 = TextNode(
+            "Text with [link](https://example.com/) here.", TextType.LINK
+        )
+        self.assertEqual(
+            split_nodes_link([node1, node2]),
+            [
+                TextNode("This text has no link link in it.", TextType.TEXT),
+                TextNode(
+                    "Text with [link](https://example.com/) here.",
+                    TextType.LINK,
+                ),
+            ],
+        )
+
+    def test_split_nodes_link_multi_nodes(self):
+        node1 = TextNode("[link](https://example.com/)", TextType.TEXT)
+        node2 = TextNode("This text has no link link in it.", TextType.TEXT)
+        node3 = TextNode(
+            "This is text with an [link](https://example.com/) and"
+            " another [link](https://example.com/) last words.",
+            TextType.TEXT,
+        )
+        self.assertEqual(
+            split_nodes_link([node1, node2, node3]),
+            [
+                TextNode("link", TextType.LINK, "https://example.com/"),
+                TextNode("This text has no link link in it.", TextType.TEXT),
+                TextNode("This is text with an ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://example.com/"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://example.com/"),
                 TextNode(" last words.", TextType.TEXT),
             ],
         )
