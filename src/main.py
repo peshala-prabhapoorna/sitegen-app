@@ -3,10 +3,16 @@ import shutil
 
 
 from copystatic import copy_dir
+from gencontent import generate_page
 
 
-static_path = "static"
-public_path = "public"
+static_path = "./static"
+public_path = "./public"
+
+
+from_path = "./content/index.md"
+template_path = "./template.html"
+dest_path = "./public"
 
 
 def main():
@@ -16,6 +22,8 @@ def main():
 
     print("copying static files to public directory...")
     copy_dir(static_path, public_path)
+
+    generate_page(from_path, template_path, dest_path)
 
 
 main()

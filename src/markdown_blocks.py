@@ -97,7 +97,7 @@ def code_to_html_node(block):
     children = text_to_children(text)
     code_html_node = ParentNode("code", children)
 
-    return ParentNode("pre", code_html_node)
+    return ParentNode("pre", [code_html_node])
 
 
 def quote_to_html_node(block):
