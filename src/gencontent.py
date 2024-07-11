@@ -5,6 +5,20 @@ import re
 from markdown_blocks import markdown_to_html_node
 
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    paths = os.listdir(dir_path_content)
+    for path in paths:
+        full_path_content = f"{dir_path_content}/{path}"
+        full_path_dest = f"{dest_dir_path}/{path}"
+
+        if os.path.isdir(full_path_content):
+            generate_pages_recursive(
+                full_path_content, template_path, full_path_dest
+            )
+        else:
+            generate_page(full_path_content, template_path, dest_dir_path)
+
+
 def extract_title(markdown):
     title = re.match(r"^# (.+)$", markdown, re.MULTILINE).group(1)
     if not title:
@@ -16,7 +30,7 @@ def extract_title(markdown):
 def generate_page(from_path, template_path, dest_path):
     print(
         f"generating page from {from_path} to {dest_path} using "
-        "{template_path}"
+        f"{template_path}"
     )
 
     markdown = None
