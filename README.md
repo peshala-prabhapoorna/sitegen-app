@@ -21,6 +21,12 @@ directory.
 The generated html files will follow the directory structure inside the  
 `content` directory. Getting directory structure correct is import for the  
 links in the final result to work. 
+
+- Place the static files attached to the markdown files inside the `static`  
+directory. The static files in the `static` directory should follow the  
+directory structure as used in the markdown files. Otherwise the files will  
+be unreachable for the generated static (HTML) sites.  
+
 - Run the `main.sh` script.
 ```bash
 ./main.sh
