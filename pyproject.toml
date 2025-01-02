@@ -3,3 +3,29 @@ line-length = 79
 
 [tool.ruff.lint]
 extend-select = ["E501"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sitegen"
+version = "1.0.0"
+authors = [
+  { name="RAP Prabhapoorna", email="peshalaprabhapoorna@gmail.com" },
+]
+description = """
+SiteGen is a static site generator that converts markdown formatted text into an
+HTML formatted static web page.
+"""
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/peshala-prabhapoorna/sitegen-app"
+Issues = "https://github.com/peshala-prabhapoorna/sitegen-app/issues"
