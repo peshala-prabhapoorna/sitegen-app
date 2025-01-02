@@ -1,6 +1,9 @@
 # Static Site Generator
-This application converts markdown documents to html format. Markdown  
-syntaxt that the application can handle are listed below:
+
+SiteGen is a static site generator that converts markdown formatted text files  
+and static content attached to them into a HTML formatted static web page.
+
+Markdown syntaxt that the application can handle are listed below:
 1. Headings
 2. Paragraphs
 3. Code Blocks
