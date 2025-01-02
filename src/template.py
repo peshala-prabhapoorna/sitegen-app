@@ -1,3 +1,4 @@
+template = """
 <!DOCTYPE html>
 <html>
 
@@ -15,3 +16,4 @@
 </body>
 
 </html>
+"""

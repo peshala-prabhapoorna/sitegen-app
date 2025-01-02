@@ -1,13 +1,11 @@
 import sys
 
 from gencontent import generate_page
-
-
-template_path = "./template.html"
+from template import template
 
 
 def generate(markdown):
-    return generate_page(markdown, template_path)
+    return generate_page(markdown, template)
 
 if __name__ == '__main__':
     markdown = sys.argv[1]

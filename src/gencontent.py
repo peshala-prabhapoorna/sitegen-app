@@ -11,12 +11,8 @@ def extract_title(markdown):
     return title.strip()
 
 
-def generate_page(markdown, template_path):
+def generate_page(markdown, template):
     print("generating page")
-
-    template = None
-    with open(template_path, "r") as file:
-        template = file.read()
 
     node = markdown_to_html_node(markdown)
     html = node.to_html()
