@@ -1,7 +1,7 @@
 import sys
 
-from gencontent import generate_page
-from template import template
+from .gencontent import generate_page
+from .template import template
 
 
 def generate(markdown):
