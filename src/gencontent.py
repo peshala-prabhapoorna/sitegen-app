@@ -20,6 +20,10 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
 
 
 def extract_title(markdown):
+    markdown = markdown.strip()
+    if not markdown:
+        raise Exception("invalid markdown: document is blank")
+
     title = re.match(r"^# (.+)$", markdown, re.MULTILINE).group(1)
     if not title:
         raise Exception("invalid markdown: document has not title")
