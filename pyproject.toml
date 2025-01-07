@@ -10,7 +10,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "sitegen"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="RAP Prabhapoorna", email="peshalaprabhapoorna@gmail.com" },
 ]
