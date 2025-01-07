@@ -1,5 +1,4 @@
-template = """
-<!DOCTYPE html>
+template = """<!DOCTYPE html>
 <html>
 
 <head>
