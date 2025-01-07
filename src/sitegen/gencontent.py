@@ -5,6 +5,8 @@ from .markdown_blocks import markdown_to_html_node
 
 def extract_title(markdown):
     markdown = markdown.strip()
+    if not markdown:
+        raise Exception("invalid markdown: document is blank")
     title = re.match(r"^# (.+)$", markdown, re.MULTILINE).group(1)
     if not title:
         raise Exception("invalid markdown: document has no title")
